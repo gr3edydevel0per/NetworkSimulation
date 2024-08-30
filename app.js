@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-// Route to generate and serve a specific topology
+
 app.get('/generateTopology', (req, res) => {
     exec('sudo python3 scripts/generateTopology.py');
     });
@@ -57,6 +57,15 @@ app.get("/icmp",(req,res)=>{
 
 app.get("/tcp",(req,res)=>{
     res.render("protocolSimulation/tcp");
+})
+
+
+app.get("/temp",(req,res)=>{
+    res.render("temp");
+})
+
+app.get("/temp2",(req,res)=>{
+    res.render("temp2");
 })
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

@@ -1,0 +1,127 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+}
+
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #323840;
+  background-image: url("");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+} /* ---- stats.js ---- */
+
+.js-count-particles {
+  font-size: 1.1em;
+}
+
+/* Main container for layout */
+.main-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+}
+
+/* Satellite SVG styling */
+.satellite-svg {
+  position: absolute;
+  left: 1%;
+  transform: scaleX(-1);
+  top: 2%;
+  opacity: 0.6;
+  animation: transmitSignals 2s infinite;
+}
+
+/* Content container styling */
+.content {
+  text-align: center;
+  color: #fff;
+  font-weight: 300;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+#projectName{
+    background: linear-gradient(to right, #9b59b6, #f39cbb); /* Gradient color */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h1 {
+  font-size: 7rem;
+  margin: 0;
+  padding: 0;
+ 
+}
+
+.firstLetter{
+    font-size: 9rem;
+}
+
+p {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+.sim-button {
+  background-color: #000; /* Dark background */
+  color: #fff; /* Light text */
+  border: 2px solid #fff; /* Light border */
+  padding: 12px 24px;
+  font-family: "Roboto", sans-serif; /* Modern sans-serif font */
+  font-size: 16px;
+  font-weight: 500; /* Medium weight for boldness */
+  text-transform: uppercase; /* Uppercase text */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  cursor: pointer;
+}
+
+/* Hover Effect */
+.sim-button:hover {
+  background-color: #fff; /* Light background */
+  color: #000; /* Dark text */
+  border: 2px solid #000; /* Dark border */
+}
+
+/* Tower SVG styling */
+.tower-svg {
+  position: absolute;
+  right: -1%;
+  bottom: -2%;
+  opacity: 0.7;
+}
+
+@keyframes transmitSignals {
+  0% {
+    transform: scaleX(-1) translateX(0) translateY(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleX(-1) translateX(10px) translateY(-10px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scaleX(-1) translateX(0) translateY(0);
+    opacity: 0.7;
+  }
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.2; }
+    100% { opacity: 1; }
+  }
+  
+  .blink {
+    animation: blink 2s infinite;
+  }
+  

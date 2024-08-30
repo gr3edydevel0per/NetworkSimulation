@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network Simulation Project</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+}
+
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  z-index: -2;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+}
+
+.content {
+  text-align: center;
+  color: #fff;
+  font-weight: 300;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #9b59b6, #f39cbb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+p {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+#topology-selector {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #fff;
+  background-color: #000;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+#load-topology {
+  background-color: #000;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+#load-topology:hover {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #000;
+}
+
+</style></head>
+<body>
+  <!-- Particle.js background -->
+  <div id="particles-js"></div>
+
+  <!-- Main container -->
+  <div class="main-container">
+    <div class="content">
+      <h1>Welcome to <span id="projectName">NetworkX</span></h1>
+      <p>Visualize and simulate various network topologies to enhance your understanding of network structures and protocols.</p>
+      
+      <!-- Dropdown for selecting topology -->
+      <select id="topology-selector">
+        <option value="bus">Bus Topology</option>
+        <option value="star">Star Topology</option>
+        <option value="ring">Ring Topology</option>
+        <option value="mesh">Mesh Topology</option>
+        <option value="tree">Tree Topology</option>
+        <option value="fully_connected">Fully Connected Topology</option>
+      </select>
+      <button id="load-topology">Apply Topology</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+ <script>
+    // Initialize Particle.js
+particlesJS('particles-js', {
+  "particles": {
+    "number": {
+      "value": 100
+    },
+    "size": {
+      "value": 3
+    },
+    "move": {
+      "speed": 1
+    },
+    "line_linked": {
+      "enable": true,
+      "distance": 150
+    }
+  }
+});
+
+// Event listener for applying topologies
+document.getElementById('load-topology').addEventListener('click', () => {
+  const selectedTopology = document.getElementById('topology-selector').value;
+  applyTopology(selectedTopology);
+});
+
+// Function to apply the selected topology
+function applyTopology(topology) {
+  // Clear previous topology effect if needed
+  clearTopology();
+
+  // Transition particles to the selected topology
+  switch (topology) {
+    case 'bus':
+      animateBusTopology();
+      break;
+    case 'star':
+      animateStarTopology();
+      break;
+    case 'ring':
+      animateRingTopology();
+      break;
+    case 'mesh':
+      animateMeshTopology();
+      break;
+    case 'tree':
+      animateTreeTopology();
+      break;
+    case 'fully_connected':
+      animateFullyConnectedTopology();
+      break;
+    default:
+      console.error('Unknown topology:', topology);
+  }
+}
+
+// Define functions to animate each topology - replace with your actual animations
+function clearTopology() {
+  // Optional: Reset particles if needed
+}
+
+function animateBusTopology() {
+  // Example animation logic for bus topology
+  particlesJS('particles-js', {
+    "particles": {
+      "number": {
+        "value": 50
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 100
+      }
+    }
+  });
+}
+
+function animateStarTopology() {
+  // Example animation logic for star topology
+  particlesJS('particles-js', {
+    "particles": {
+      "number": {
+        "value": 70
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 120
+      }
+    }
+  });
+}
+
+function animateRingTopology() {
+  // Example animation logic for ring topology
+  particlesJS('particles-js', {
+    "particles": {
+      "number": {
+        "value": 90
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 140
+      }
+    }
+  });
+}
+
+function animateMeshTopology() {
+  // Example animation logic for mesh topology
+  particlesJS('particles-js', {
+    "particles": {
+      "number": {
+        "value": 100
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 160
+      }
+    }
+  });
+}
+
+function animateTreeTopology() {
+  // Example animation logic for tree topology
+  particlesJS('particles-js', {
+    "particles": {
+      "number": {
+        "value": 60
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 110
+      }
+    }
+  });
+}
+
+function animateFullyConnectedTopology() {
+  // Example animation logic for fully connected topology
+  particlesJS('particles-js', {
+    "particles": {
+      "number": {
+        "value": 80
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 130
+      }
+    }
+  });
+}
+
+ </script>
+</body>
+</html>

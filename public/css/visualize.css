@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+#visualization {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 80vw;
+    height: 80vh;
+    position: relative;
+}
+.node {
+    stroke: #333;
+    stroke-width: 2px;
+    cursor: pointer;
+}
+.link {
+    stroke: #888;
+    stroke-opacity: 0.6;
+    stroke-width: 2px;
+}
+.label {
+    font-size: 12px;
+    text-anchor: middle;
+    pointer-events: none;
+}
+.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    padding: 5px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+}
+h1 {
+    text-align: center;
+    color: #333;
+}

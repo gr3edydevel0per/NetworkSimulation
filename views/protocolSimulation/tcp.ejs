@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP Star Topology Simulation</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <link rel="stylesheet" href="/css/visualize.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #visualization {
+            flex: 3;
+            background-color: #f9f9f9;
+            border-right: 2px solid #ddd;
+            position: relative;
+        }
+        #explanation {
+            flex: 1;
+            padding: 20px;
+            background-color: #ffffff;
+            border-left: 2px solid #ddd;
+            overflow-y: auto;
+        }
+        .step {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fafafa;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .step.active {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            transform: translateX(5px);
+        }
+        .node {
+            cursor: pointer;
+            transition: fill 0.3s, stroke 0.3s;
+        }
+        .node:hover {
+            fill: #ff7f0e;
+            stroke: #555;
+        }
+        .link {
+            stroke: #bbb;
+            stroke-width: 2;
+        }
+        .packet {
+            stroke: #ff0000;
+            stroke-width: 2;
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="visualization"></div>
+    <div id="explanation">
+        <div id="step1" class="step">Step 1: Click on the source node</div>
+        <div id="step2" class="step">Step 2: Click on the destination node to start TCP simulation...</div>
+        <div id="step3" class="step">Step 3: Click on the source node to continue TCP simulation with another host...</div>
+        <div id="step4" class="step">Step 4: Click on the destination node to complete TCP simulation through the switch...</div>
+        <div id="step5" class="step">Step 5: TCP Communication Completed!</div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectedNodes = [];
+        let currentStep = 1;
+
+        fetch('/topology/star')
+            .then(response => response.json())
+            .then(data => {
+                const svg = d3.select('#visualization').append('svg')
+                    .attr('width', '100%')
+                    .attr('height', '100%');
+
+                const width = svg.node().clientWidth;
+                const height = svg.node().clientHeight;
+
+                const nodes = data.nodes;
+                const links = data.links;
+
+                svg.append("defs").append("marker")
+                    .attr("id", "arrow")
+                    .attr("viewBox", "0 -5 10 10")
+                    .attr("refX", 15)
+                    .attr("refY", 0)
+                    .attr("markerWidth", 6)
+                    .attr("markerHeight", 6)
+                    .attr("orient", "auto")
+                    .append("path")
+                    .attr("d", "M0,-5L10,0L0,5")
+                    .attr("fill", "#999");
+
+                applyStarLayout(nodes, width, height);
+
+                const link = svg.append('g')
+                    .selectAll('line')
+                    .data(links)
+                    .enter().append('line')
+                    .attr('class', 'link');
+
+                const node = svg.append('g')
+                    .selectAll('circle')
+                    .data(nodes)
+                    .enter().append('circle')
+                    .attr('class', 'node')
+                    .attr('r', 20)
+                    .attr('fill', d => d.group === 'host' ? '#1f77b4' : '#ff7f0e')
+                    .attr('stroke', '#333')
+                    .attr('stroke-width', 2);
+
+                const label = svg.append('g')
+                    .selectAll('text')
+                    .data(nodes)
+                    .enter().append('text')
+                    .attr('class', 'label')
+                    .text(d => d.id)
+                    .attr('text-anchor', 'middle')
+                    .attr('dy', 5)
+                    .attr('font-size', '12px')
+                    .attr('fill', '#333');
+
+                node.on('click', function(event, d) {
+                    if (selectedNodes.length === 0) {
+                        selectedNodes.push(d);
+                        activateStep(2, "Click on the destination node to start TCP simulation...");
+                    } else if (selectedNodes.length === 1) {
+                        selectedNodes.push(d);
+                        if (currentStep === 1) {
+                            simulateTCP(selectedNodes[0], selectedNodes[1]);
+                            currentStep = 2;
+                            activateStep(3, "Click on the source node to continue TCP simulation with another host...");
+                        } else if (currentStep === 2) {
+                            simulateTCP(selectedNodes[1], d);
+                            currentStep = 3;
+                            activateStep(4, "Click on the destination node to complete TCP simulation through the switch...");
+                        } else {
+                            simulateTCP(selectedNodes[1], d, true);
+                            selectedNodes.length = 0;
+                            activateStep(5, "TCP Communication Completed!");
+                        }
+                    }
+                });
+
+                const simulation = d3.forceSimulation(nodes)
+                    .force('link', d3.forceLink(links).id(d => d.id).distance(100))
+                    .force('charge', d3.forceManyBody().strength(-400))
+                    .force('center', d3.forceCenter(width / 2, height / 2))
+                    .on('tick', () => {
+                        link
+                            .attr('x1', d => d.source.x)
+                            .attr('y1', d => d.source.y)
+                            .attr('x2', d => d.target.x)
+                            .attr('y2', d => d.target.y);
+
+                        node
+                            .attr('cx', d => d.x)
+                            .attr('cy', d => d.y);
+
+                        label
+                            .attr('x', d => d.x)
+                            .attr('y', d => d.y + 5);
+                    });
+
+                function simulateTCP(sourceNode, destinationNode, throughSwitch = false) {
+                    const switchNode = nodes.find(node => node.id.startsWith('s'));
+
+                    activateStep(1, `Sending SYN packet from ${sourceNode.id} to ${throughSwitch ? switchNode.id : destinationNode.id}`);
+                    const synPacket = createPacket(sourceNode, throughSwitch ? switchNode : destinationNode, 'SYN');
+
+                    animatePacket(synPacket, sourceNode, throughSwitch ? switchNode : destinationNode, () => {
+                        if (throughSwitch) {
+                            activateStep(2, `SYN-ACK packet sent from ${switchNode.id} to ${destinationNode.id}`);
+                            const synAckPacket = createPacket(switchNode, destinationNode, 'SYN-ACK');
+
+                            animatePacket(synAckPacket, switchNode, destinationNode, () => {
+                                activateStep(3, `Sending ACK packet from ${sourceNode.id} to ${switchNode.id}`);
+                                const ackPacket = createPacket(sourceNode, switchNode, 'ACK');
+
+                                animatePacket(ackPacket, sourceNode, switchNode, () => {
+                                    activateStep(4, `Starting data transmission from ${switchNode.id} to ${destinationNode.id}`);
+                                    const dataPacket = createPacket(switchNode, destinationNode, 'DATA');
+
+                                    animatePacket(dataPacket, switchNode, destinationNode, () => {
+                                        activateStep(5, "TCP communication completed.");
+                                    });
+                                });
+                            });
+                        } else {
+                            activateStep(2, `SYN-ACK packet sent from ${destinationNode.id} to ${sourceNode.id}`);
+                            const synAckPacket = createPacket(destinationNode, sourceNode, 'SYN-ACK');
+
+                            animatePacket(synAckPacket, destinationNode, sourceNode, () => {
+                                activateStep(3, `Sending ACK packet from ${sourceNode.id} to ${destinationNode.id}`);
+                                const ackPacket = createPacket(sourceNode, destinationNode, 'ACK');
+
+                                animatePacket(ackPacket, sourceNode, destinationNode, () => {
+                                    activateStep(4, `Data packet transmission from ${sourceNode.id} to ${destinationNode.id}`);
+                                    const dataPacket = createPacket(sourceNode, destinationNode, 'DATA');
+
+                                    animatePacket(dataPacket, sourceNode, destinationNode, () => {
+                                        activateStep(5, "TCP communication completed.");
+                                    });
+                                });
+                            });
+                        }
+                    });
+                }
+
+                function createPacket(source, target, type) {
+                    return svg.append('line')
+                        .attr('class', 'packet')
+                        .attr('x1', source.x)
+                        .attr('y1', source.y)
+                        .attr('x2', source.x)
+                        .attr('y2', source.y);
+                }
+
+                function animatePacket(packet, start, end, callback) {
+                    const totalLength = Math.sqrt(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2));
+                    const steps = 30;
+                    let step = 0;
+
+                    function stepAnimation() {
+                        const progress = step / steps;
+                        packet.attr('x2', start.x + (end.x - start.x) * progress)
+                            .attr('y2', start.y + (end.y - start.y) * progress);
+
+                        if (step < steps) {
+                            step++;
+                            requestAnimationFrame(stepAnimation);
+                        } else {
+                            packet.remove();
+                            if (callback) callback();
+                        }
+                    }
+
+                    stepAnimation();
+                }
+
+                function activateStep(stepNumber, message) {
+                    d3.selectAll('.step').classed('active', false);
+                    d3.select(`#step${stepNumber}`).classed('active', true);
+                    document.getElementById('explanation').scrollTop = document.getElementById('explanation').scrollHeight;
+                    d3.select(`#step${stepNumber}`).text(message);
+                }
+
+                function applyStarLayout(nodes, width, height) {
+                    const centerX = width / 2;
+                    const centerY = height / 2;
+                    const radius = 200;
+
+                    nodes.forEach((node, index) => {
+                        if (node.id.startsWith('h')) {
+                            const angle = (index - 1) * (2 * Math.PI / (nodes.length - 1));
+                            node.x = centerX + radius * Math.cos(angle);
+                            node.y = centerY + radius * Math.sin(angle);
+                        } else {
+                            node.x = centerX;
+                            node.y = centerY;
+                        }
+                    });
+                }
+            });
+    });
+</script>
+</body>
+</html>

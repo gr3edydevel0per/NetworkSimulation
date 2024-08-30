@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICMP Simulation - Star Topology</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <link rel="stylesheet" href="/css/visualize.css">
+</head>
+<body>
+    <div id="visualization"></div>
+    <div id="explanation" style="text-align: center; margin-top: 20px; font-family: Arial, sans-serif; color: #333;"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/topology/star')
+                .then(response => response.json())
+                .then(data => {
+                    const svg = d3.select('#visualization').append('svg');
+                    const width = document.getElementById('visualization').offsetWidth;
+                    const height = document.getElementById('visualization').offsetHeight;
+                    svg.attr('width', width).attr('height', height);
+
+                    const nodes = data.nodes;
+                    const links = data.links;
+
+                    applyStarLayout(nodes, links, width, height);
+
+                    const link = svg.append('g')
+                        .selectAll('line')
+                        .data(links)
+                        .enter().append('line')
+                        .attr('class', 'link');
+
+                    const node = svg.append('g')
+                        .selectAll('circle')
+                        .data(nodes)
+                        .enter().append('circle')
+                        .attr('class', 'node')
+                        .attr('r', 20)
+                        .attr('fill', d => d.group === 'host' ? '#1f77b4' : '#ff7f0e');
+
+                    const label = svg.append('g')
+                        .selectAll('text')
+                        .data(nodes)
+                        .enter().append('text')
+                        .attr('class', 'label')
+                        .text(d => d.id);
+
+        
+                    node.on('click', function(event, d) {
+                        document.getElementById('explanation').innerHTML = `<p>Initiating ICMP request from ${d.id}. Clicked node is the source.</p>`;
+                        simulateICMP(d, nodes, link);
+                    });
+
+                    const simulation = d3.forceSimulation(nodes)
+                        .force('link', d3.forceLink(links).id(d => d.id).distance(100))
+                        .force('charge', d3.forceManyBody().strength(-400))
+                        .force('center', d3.forceCenter(width / 2, height / 2))
+                        .on('tick', () => {
+                            link
+                                .attr('x1', d => d.source.x)
+                                .attr('y1', d => d.source.y)
+                                .attr('x2', d => d.target.x)
+                                .attr('y2', d => d.target.y);
+
+                            node
+                                .attr('cx', d => d.x)
+                                .attr('cy', d => d.y);
+
+                            label
+                                .attr('x', d => d.x)
+                                .attr('y', d => d.y + 4);
+                        });
+
+                    function simulateICMP(sourceNode, nodes, links) {
+                        const destinationNode = nodes.find(n => n.id.startsWith('s'));
+
+                        const icmpRequest = svg.append('circle')
+                            .attr('cx', sourceNode.x)
+                            .attr('cy', sourceNode.y)
+                            .attr('r', 5)
+                            .attr('fill', 'green');
+
+                        icmpRequest.transition()
+                            .duration(1000)
+                            .attr('cx', destinationNode.x)
+                            .attr('cy', destinationNode.y)
+                            .on('start', () => {
+                                document.getElementById('explanation').innerHTML += `<p>ICMP request packet sent from ${sourceNode.id} to ${destinationNode.id}.</p>`;
+                            })
+                            .on('end', () => {
+                                document.getElementById('explanation').innerHTML += `<p>ICMP request received at ${destinationNode.id}. Sending ICMP reply back to ${sourceNode.id}.</p>`;
+                                icmpRequest.transition()
+                                    .duration(1000)
+                                    .attr('cx', sourceNode.x)
+                                    .attr('cy', sourceNode.y)
+                                    .on('end', () => {
+                                        icmpRequest.remove();
+                                        document.getElementById('explanation').innerHTML += `<p>ICMP reply received at ${sourceNode.id}. Ping completed successfully.</p>`;
+                                    });
+                            });
+                    }
+
+                    function applyStarLayout(nodes, links, width, height) {
+                        const centerNode = nodes.find(node => node.id.startsWith('s'));
+                        const outerNodes = nodes.filter(node => node.id.startsWith('h'));
+                        const radius = Math.min(width, height) / 3;
+                        const angleStep = (2 * Math.PI) / outerNodes.length;
+
+                        nodes.forEach(node => {
+                            if (node.id === centerNode.id) {
+                                node.x = width / 2;
+                                node.y = height / 2;
+                            } else {
+                                const index = outerNodes.indexOf(node);
+                                node.x = width / 2 + radius * Math.cos(index * angleStep);
+                                node.y = height / 2 + radius * Math.sin(index * angleStep);
+                            }
+                        });
+                    }
+                })
+                .catch(error => console.error('Error loading topology:', error));
+        });
+    </script>
+</body>
+</html>

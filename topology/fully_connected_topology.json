@@ -1,0 +1,46 @@
+{
+  "nodes": [
+    {
+      "id": "h1",
+      "group": "host"
+    },
+    {
+      "id": "h2",
+      "group": "host"
+    },
+    {
+      "id": "h3",
+      "group": "host"
+    },
+    {
+      "id": "h4",
+      "group": "host"
+    }
+  ],
+  "links": [
+    {
+      "source": "h1",
+      "target": "h2"
+    },
+    {
+      "source": "h1",
+      "target": "h3"
+    },
+    {
+      "source": "h1",
+      "target": "h4"
+    },
+    {
+      "source": "h2",
+      "target": "h3"
+    },
+    {
+      "source": "h2",
+      "target": "h4"
+    },
+    {
+      "source": "h3",
+      "target": "h4"
+    }
+  ]
+}

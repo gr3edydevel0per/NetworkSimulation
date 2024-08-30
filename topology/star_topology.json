@@ -1,0 +1,50 @@
+{
+  "nodes": [
+    {
+      "id": "h1",
+      "group": "host"
+    },
+    {
+      "id": "h2",
+      "group": "host"
+    },
+    {
+      "id": "h3",
+      "group": "host"
+    },
+    {
+      "id": "h4",
+      "group": "host"
+    },
+    {
+      "id": "h5",
+      "group": "host"
+    },
+    {
+      "id": "s1",
+      "group": "switch"
+    }
+  ],
+  "links": [
+    {
+      "source": "h1",
+      "target": "s1"
+    },
+    {
+      "source": "h2",
+      "target": "s1"
+    },
+    {
+      "source": "h3",
+      "target": "s1"
+    },
+    {
+      "source": "h4",
+      "target": "s1"
+    },
+    {
+      "source": "h5",
+      "target": "s1"
+    }
+  ]
+}

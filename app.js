@@ -39,17 +39,9 @@ app.get('/generateTopology', (req, res) => {
     });
     
 
-    app.get('/visualize/:type', (req, res) => {
-        const topologyType = req.params.type;
-        const allowedTopologies = ['bus', 'star', 'ring', 'mesh', 'tree', 'fully_connected'];
-        
-        if (!allowedTopologies.includes(topologyType)) {
-            return res.status(400).send('Invalid topology type');
-        }
-    
-        res.render('topologyVisualizer/visualize', { topologyType });
-    });
-
+app.get("/simulator",(req,res)=>{
+    res.render("model/simulator");
+})
 
 app.get("/icmp",(req,res)=>{
     res.render("icmp_star");
@@ -60,13 +52,6 @@ app.get("/tcp",(req,res)=>{
 })
 
 
-app.get("/temp",(req,res)=>{
-    res.render("temp");
-})
-
-app.get("/temp2",(req,res)=>{
-    res.render("temp2");
-})
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

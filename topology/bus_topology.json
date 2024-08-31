@@ -24,10 +24,18 @@
       "id": "s1",
       "group": "switch"
     },
-{
-"id": "s2",
-"group":"switch"
-}
+    {
+      "id": "s2",
+      "group": "switch"
+    },
+    {
+      "id": "s3",
+      "group": "switch"
+    },
+    {
+      "id": "s4",
+      "group": "switch"
+    }
   ],
   "links": [
     {
@@ -40,19 +48,28 @@
     },
     {
       "source": "h3",
-      "target": "s1"
-    },
-    {
-      "source": "h4",
       "target": "s2"
     },
     {
+      "source": "h4",
+      "target": "s3"
+    },
+    {
       "source": "h5",
+      "target": "s4"
+    },
+    {
+      "source": "s1",
       "target": "s2"
     },
     {
       "source": "s2",
-      "target": "s1"
+      "target": "s3"
+    },
+    {
+      "source": "s3",
+      "target": "s4"
     }
   ]
 }
+

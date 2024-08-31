@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Topology Generator</title>
+    <link rel="stylesheet" href="/css/visualize.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.168.0/three.module.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.168.0/three.webgpu.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Network Topology Generator</h1>
+    </header>
+    <div class="main-content">
+        <aside>
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="#">Protocols</a></li>
+                <li>
+                    <a href="#">Topologies</a>
+                    <ul>
+                        <li><a href="#" data-topology="bus">Bus Topology</a></li>
+                        <li><a href="#" data-topology="star">Star Topology</a></li>
+                        <li><a href="#" data-topology="ring">Ring Topology</a></li>
+                        <li><a href="#" data-topology="mesh">Mesh Topology</a></li>
+                        <li><a href="#" data-topology="tree">Tree Topology</a></li>
+                        <li><a href="#" data-topology="fully_connected">Fully Connected Topology</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+        <div id="visualization">
+            <!-- Default image -->
+        </div>
+    </div>
+    <footer>
+        &copy; 2024 Network Topology Generator. All rights reserved.
+    </footer>
+
+    <script src="/js/topoLayout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click event listeners to all topology links
+            const topologyLinks = document.querySelectorAll('a[data-topology]');
+            
+            topologyLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const topologyType = this.getAttribute('data-topology');
+                    renderTopology(topologyType);
+                });
+            });
+
+            // Function to render topology based on the type
+            function renderTopology(topologyType) {
+                fetch(`/topology/${topologyType}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const svg = d3.select('#visualization').html('').append('svg'); // Clear previous content
+                        const width = document.getElementById('visualization').offsetWidth;
+                        const height = document.getElementById('visualization').offsetHeight;
+                        svg.attr('width', width).attr('height', height);
+
+                        const nodes = data.nodes;
+                        const links = data.links;
+
+                        // Apply topology-specific layouts
+                        if (topologyType === 'star') {
+                            applyStarLayout(nodes, links, width, height);
+                        } else if (topologyType === 'bus') {
+                            applyBusLayout(nodes, links, width, height);
+                        } else if (topologyType === 'ring') {
+                            applyRingLayout(nodes, links, width, height);
+                        } else if (topologyType === 'mesh') {
+                            applyMeshLayout(nodes, links, width, height);
+                        } else if (topologyType === 'tree') {
+                            applyTreeLayout(nodes, links, width, height);
+                        } else if (topologyType === 'fully_connected') {
+                            applyFullyConnectedLayout(nodes, links, width, height);
+                        }
+
+                        const link = svg.append('g')
+                            .selectAll('line')
+                            .data(links)
+                            .enter().append('line')
+                            .attr('class', 'link');
+
+                        const node = svg.append('g')
+                            .selectAll('circle')
+                            .data(nodes)
+                            .enter().append('circle')
+                            .attr('class', 'node')
+                            .attr('r', 20)
+                            .attr('fill', d => d.group === 'host' ? '#1f77b4' : '#ff7f0e');
+
+                        const label = svg.append('g')
+                            .selectAll('text')
+                            .data(nodes)
+                            .enter().append('text')
+                            .attr('class', 'label')
+                            .text(d => d.id);
+
+                        const simulation = d3.forceSimulation(nodes)
+                            .force('link', d3.forceLink(links).id(d => d.id).distance(100))
+                            .force('charge', d3.forceManyBody().strength(-400))
+                            .force('center', d3.forceCenter(width / 2, height / 2))
+                            .on('tick', () => {
+                                link
+                                    .attr('x1', d => d.source.x)
+                                    .attr('y1', d => d.source.y)
+                                    .attr('x2', d => d.target.x)
+                                    .attr('y2', d => d.target.y);
+
+                                node
+                                    .attr('cx', d => d.x)
+                                    .attr('cy', d => d.y);
+
+                                label
+                                    .attr('x', d => d.x)
+                                    .attr('y', d => d.y + 4);
+                            });
+
+                        node.call(drag(simulation));
+
+                        function drag(simulation) {
+                            function dragstarted(event, d) {
+                                if (!event.active) simulation.alphaTarget(0.3).restart();
+                                d.fx = d.x;
+                                d.fy = d.y;
+                            }
+
+                            function dragged(event, d) {
+                                d.fx = event.x;
+                                d.fy = event.y;
+                            }
+
+                            function dragended(event, d) {
+                                if (!event.active) simulation.alphaTarget(0);
+                                d.fx = null;
+                                d.fy = null;
+                            }
+
+                            return d3.drag()
+                                .on('start', dragstarted)
+                                .on('drag', dragged)
+                                .on('end', dragended);
+                        }
+                    })
+                    .catch(error => console.error('Error loading topology:', error));
+            }
+        });
+    </script>
+</body>
+</html>

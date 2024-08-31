@@ -1,153 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network Topology Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            display: flex;
-            height: 100vh;
-            flex-direction: column;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        .main-content {
-            display: flex;
-            flex: 1;
-            margin: 2rem auto;
-            width: 80%;
-        }
-        aside {
-            width: 250px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-right: 1rem;
-        }
-        aside h3 {
-            margin-top: 0;
-            font-size: 1.25rem;
-            color: #444;
-        }
-        aside ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        aside ul li {
-            margin: 0.5rem 0;
-        }
-        aside ul li ul {
-            margin-left: 1rem;
-            list-style-type: none;
-            padding-left: 0;
-        }
-        aside ul li ul li {
-            margin: 0.3rem 0;
-        }
-        aside a {
-            text-decoration: none;
-            color: #333;
-        }
-        aside a:hover {
-            color: #007bff;
-        }
-        .container {
-            flex: 1;
-            padding: 1rem;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            text-align: center;
-        }
-        h2 {
-            margin-top: 0;
-            font-size: 1.5rem;
-            color: #444;
-        }
-        select, button {
-            font-size: 1rem;
-            padding: 0.5rem;
-            margin: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #333;
-            color: #fff;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #555;
-        }
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #333;
-            color: #fff;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network Simulation Project</title>
+  <link rel="stylesheet" type="text/css" href="/css/landing.css">
 </head>
 <body>
-    <header>
-        <h1>Network Topology Generator</h1>
-    </header>
-    <div class="main-content">
-        <aside>
-            <h3>Categories</h3>
-            <ul>
-                <li><a href="#">Protocols</a></li>
-                <li>
-                    <a href="#">Topologies</a>
-                    <ul>
-                        <li><a href="/visualize/bus">Bus Topology</a></li>
-                        <li><a href="/visualize/star">Star Topology</a></li>
-                        <li><a href="/visualize/ring">Ring Topology</a></li>
-                        <li><a href="/visualize/mesh">Mesh Topology</a></li>
-                        <li><a href="/visualize/tree">Tree Topology</a></li>
-                        <li><a href="/visualize/fully_connected">Fully Connected Topology</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </aside>
-        <div class="container">
-            <h2>Select and Visualize Topology</h2>
-            <form id="topologyForm">
-                <select id="topologySelect">
-                    <option value="bus">Bus Topology</option>
-                    <option value="star">Star Topology</option>
-                    <option value="ring">Ring Topology</option>
-                    <option value="mesh">Mesh Topology</option>
-                    <option value="tree">Tree Topology</option>
-                    <option value="fully_connected">Fully Connected Topology</option>
-                </select>
-                <button type="submit">Go</button>
-            </form>
-        </div>
+  <!-- Particle.js background -->
+<!-- particles.js container --> <div id="particles-js"></div>
+  <div class="main-container">
+    <!-- Satellite SVG -->
+
+    <!-- Content container -->
+    <div class="content">
+      <h1><span class="firstLetter">W</span>elcome to <span id="projectName"><span class="firstLetter">N</span>etwork<span class="firstLetter">X</span></span></h1>
+      <p>Visualize and simulate various network topologies to enhance your understanding of network structures and protocols.</p>
+      <a href="/simulator" style="text-decoration: none;">
+        <button class="sim-button">Start Simulation</button>
+      </a>
     </div>
-    <footer>
-        &copy; 2024 Network Topology Generator. All rights reserved.
-    </footer>
-    <script>
-        document.getElementById('topologyForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const selectedTopology = document.getElementById('topologySelect').value;
-            window.location.href = `/visualize/${selectedTopology}`;
-        });
-    </script>
+    <!-- Tower SVG -->
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="/js/landing.js"></script>
 </body>
 </html>

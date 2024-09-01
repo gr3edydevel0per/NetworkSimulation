@@ -10,24 +10,29 @@ body {
 }
 header {
 
-    padding: 1rem;
+    margin: 1rem;
+    margin-bottom: 0rem;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 .main-content {
     display: flex;
     flex: 1;
-    margin-top: 2rem;
+    margin-top: 1rem;
     width: 80%;
 }
 aside {
-    width: 250px;
-    height: 80vh;
+    width: 220px;
+    height: 75vh;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
+
+   padding-left: 16px;
     border-radius: 8px;
-    margin: 0rem 2rem;
+    margin-left: 16px;
+
 }
 aside h3 {
     margin-top: 0;

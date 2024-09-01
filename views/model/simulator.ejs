@@ -7,16 +7,28 @@
     <link rel="stylesheet" href="/css/visualize.css">
     <link rel="stylesheet" href="/css/index.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.168.0/three.module.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.168.0/three.webgpu.min.js"></script>
+    <style>
+#projectName{
+    background: linear-gradient(to right, #9b59b6, #f39cbb); /* Gradient color */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h1 {
+  font-size: 4rem;
+  margin: 0;
+  padding: 0;
+ 
+}
+
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Network Topology Generator</h1>
-    </header>
+ 
     <div class="main-content">
         <aside>
-            <h3>Categories</h3>
+            <h1><span id="projectName"><span class="firstLetter">N</span>etwork<span class="firstLetter">X</span></span></h1>
+
             <ul>
                 <li><a href="#">Protocols</a></li>
                 <li>
@@ -33,12 +45,14 @@
             </ul>
         </aside>
         <div id="visualization">
-            <!-- Default image -->
+            <svg width="100%" height="100%">
+                <text x="50%" y="50%" text-anchor="middle" fill="#888" font-size="1.5rem">Select a topology to visualize it</text>
+            </svg>
         </div>
     </div>
-    <footer>
-        &copy; 2024 Network Topology Generator. All rights reserved.
-    </footer>
+    <div id="explanation">
+
+    </div>
 
     <script src="/js/topoLayout.js"></script>
     <script>

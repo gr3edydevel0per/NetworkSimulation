@@ -1,0 +1,17 @@
+     <aside>
+            <h3 style="padding-top: 16px;">Categories</h3>
+            <ul>
+                <li><a href="#">Protocols</a></li>
+                <li>
+                    <a href="#">Topologies</a>
+                    <ul>
+                        <li><a href="#" data-topology="bus">Bus Topology</a></li>
+                        <li><a href="#" data-topology="star">Star Topology</a></li>
+                        <li><a href="#" data-topology="ring">Ring Topology</a></li>
+                        <li><a href="#" data-topology="mesh">Mesh Topology</a></li>
+                        <li><a href="#" data-topology="tree">Tree Topology</a></li>
+                        <li><a href="#" data-topology="fully_connected">Fully Connected Topology</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>

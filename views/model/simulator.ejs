@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network Topology Generator</title>
+    <title>NetworkX</title>
     <link rel="stylesheet" href="/css/visualize.css">
     <link rel="stylesheet" href="/css/index.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
@@ -15,8 +15,8 @@
 }
 
 h1 {
-  font-size: 4rem;
-  margin: 0;
+  font-size: 40px;
+  margin: 8px 0px;
   padding: 0;
  
 }
@@ -30,8 +30,7 @@ h1 {
             <h1><span id="projectName"><span class="firstLetter">N</span>etwork<span class="firstLetter">X</span></span></h1>
 
             <ul>
-                <li><a href="#">Protocols</a></li>
-                <li>
+             
                     <a href="#">Topologies</a>
                     <ul>
                         <li><a href="#" data-topology="bus">Bus Topology</a></li>
@@ -76,7 +75,7 @@ h1 {
                         const svg = d3.select('#visualization').html('').append('svg'); // Clear previous content
                         const width = document.getElementById('visualization').offsetWidth;
                         const height = document.getElementById('visualization').offsetHeight;
-                        svg.attr('width', width).attr('height', height);
+                        svg.attr('width', .90 * width).attr('height', .90 * height);
 
                         const nodes = data.nodes;
                         const links = data.links;

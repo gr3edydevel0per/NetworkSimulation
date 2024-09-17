@@ -1,0 +1,33 @@
+<aside>
+    <h1><span id="projectName"><span class="firstLetter">N</span>etwork<span class="firstLetter">X</span></span></h1>
+
+    <ul>
+
+        <li>
+            <a href="#" class="dropdown-toggle">Path Finder</a>
+            <ul class="dropdown-content" style="display: none;">
+                <!-- Add path finder sub-categories here if needed -->
+                <li><a href="/pathfinder">Open Shortest Path</a></li>
+            </ul>
+        </li>
+        <li ><a href="/simulator"> Topology Explainer</a></li>
+    </ul>
+</aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggles = document.querySelectorAll('.dropdown-toggle');
+        
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                const dropdown = this.nextElementSibling;
+                if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                    dropdown.style.display = 'block';
+                } else {
+                    dropdown.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>

@@ -1,46 +1,48 @@
 {
   "nodes": [
-    {
-      "id": "h1",
-      "group": "host"
-    },
-    {
-      "id": "h2",
-      "group": "host"
-    },
-    {
-      "id": "h3",
-      "group": "host"
-    },
-    {
-      "id": "h4",
-      "group": "host"
-    }
+    { "id": "h1", "group": "host" },
+    { "id": "h2", "group": "host" },
+    { "id": "h3", "group": "host" },
+    { "id": "h4", "group": "host" },
+    { "id": "h5", "group": "host" },
+    { "id": "h6", "group": "host" },
+    { "id": "h7", "group": "host" },
+    { "id": "h8", "group": "host" }
   ],
   "links": [
-    {
-      "source": "h1",
-      "target": "h2"
-    },
-    {
-      "source": "h1",
-      "target": "h3"
-    },
-    {
-      "source": "h1",
-      "target": "h4"
-    },
-    {
-      "source": "h2",
-      "target": "h3"
-    },
-    {
-      "source": "h2",
-      "target": "h4"
-    },
-    {
-      "source": "h3",
-      "target": "h4"
-    }
+    { "source": "h1", "target": "h2" },
+    { "source": "h1", "target": "h3" },
+    { "source": "h1", "target": "h4" },
+    { "source": "h1", "target": "h5" },
+    { "source": "h1", "target": "h6" },
+    { "source": "h1", "target": "h7" },
+    { "source": "h1", "target": "h8" },
+    
+    { "source": "h2", "target": "h3" },
+    { "source": "h2", "target": "h4" },
+    { "source": "h2", "target": "h5" },
+    { "source": "h2", "target": "h6" },
+    { "source": "h2", "target": "h7" },
+    { "source": "h2", "target": "h8" },
+    
+    { "source": "h3", "target": "h4" },
+    { "source": "h3", "target": "h5" },
+    { "source": "h3", "target": "h6" },
+    { "source": "h3", "target": "h7" },
+    { "source": "h3", "target": "h8" },
+    
+    { "source": "h4", "target": "h5" },
+    { "source": "h4", "target": "h6" },
+    { "source": "h4", "target": "h7" },
+    { "source": "h4", "target": "h8" },
+    
+    { "source": "h5", "target": "h6" },
+    { "source": "h5", "target": "h7" },
+    { "source": "h5", "target": "h8" },
+    
+    { "source": "h6", "target": "h7" },
+    { "source": "h6", "target": "h8" },
+    
+    { "source": "h7", "target": "h8" }
   ]
 }

@@ -16,7 +16,7 @@
 
         h1 {
             font-size: 40px;
-            margin: 8px 0;
+            margin: 8px 0px;
             padding: 0;
         }
 
@@ -42,19 +42,15 @@
             font-weight: bold;
             fill: #333;
         }
-
-        .packet {
-            fill: red;
-        }
     </style>
 </head>
 <body>
     <div class="main-content">
-        <%- include('../model/sidebar.ejs') %>
+        <%- include('model/sidebar.ejs') %>
         <div style="z-index: 1; position: absolute; right: 1%;">
             <label for="topologies">Select Topology:</label>
             <select id="topologies">
-                <option value="">Select Topology</option>
+                <option value="">Select Topology</option> <!-- Placeholder option -->
                 <option value="bus">Bus Topology</option>
                 <option value="star">Star Topology</option>
                 <option value="ring">Ring Topology</option>
@@ -90,8 +86,8 @@
             const endNodeSelect = document.getElementById('endNode');
             const findPathButton = document.getElementById('findPathBtn');
             const topologySelect = document.getElementById('topologies');
-            const svg = d3.select('#visualization svg');
 
+            // Event listener for topology selection
             topologySelect.addEventListener('change', function() {
                 const topologyType = this.value;
                 if (topologyType) {
@@ -108,10 +104,10 @@
 
                         populateSelectBoxes(nodes);
 
+                        const svg = d3.select('#visualization').html('').append('svg');
                         const width = document.getElementById('visualization').offsetWidth;
                         const height = document.getElementById('visualization').offsetHeight;
-                        
-                        svg.selectAll('*').remove(); // Clear previous content
+                        svg.attr('width', .90 * width).attr('height', 1 * height);
 
                         // Visualization layout logic for different topologies
                         if (topologyType === 'star') {
@@ -194,14 +190,15 @@
                                 .on('drag', dragged)
                                 .on('end', dragended);
                         }
-                    })
-                    .catch(error => console.error('Error loading topology:', error));
+                    });
             }
 
             function populateSelectBoxes(nodes) {
+                // Clear the select boxes
                 startNodeSelect.innerHTML = '';
                 endNodeSelect.innerHTML = '';
 
+                // Populate both start and end node select boxes with node options
                 nodes.forEach(node => {
                     const option1 = document.createElement('option');
                     option1.value = node.id;
@@ -266,49 +263,17 @@
                 return null;
             }
 
-            function animatePacket(path) {
-    // Find the start node and set initial position of the packet
-    const startNode = nodes.find(n => n.id === path[0]);
-    const packet = svg.append('circle')
-        .attr('class', 'packet')
-        .attr('r', 10)
-        .attr('fill', 'red')
-        .attr('cx', startNode.x)  // Set initial x position to startNode's x
-        .attr('cy', startNode.y); // Set initial y position to startNode's y
-
-    let index = 0;
-
-    function movePacket() {
-        if (index < path.length - 1) {
-            const startNode = nodes.find(n => n.id === path[index]);
-            const endNode = nodes.find(n => n.id === path[index + 1]);
-
-            packet.transition()
-                .duration(1000)
-                .attr('cx', endNode.x)
-                .attr('cy', endNode.y)
-                .on('end', () => {
-                    index++;
-                    movePacket();
-                });
-        } else {
-            packet.remove(); // Remove packet when the animation is complete
-        }
-    }
-
-    movePacket();
-}
-
-
             function drawPath(path, nodes) {
-                d3.selectAll('.path').remove();
-
                 const pathLinks = path.reduce((acc, node, i) => {
                     if (i < path.length - 1) {
                         acc.push({ source: node, target: path[i + 1] });
                     }
                     return acc;
                 }, []);
+
+                d3.selectAll('.path').remove();
+
+                const svg = d3.select('#visualization svg');
 
                 svg.append('g')
                     .selectAll('line')
@@ -319,8 +284,6 @@
                     .attr('y1', d => nodes.find(n => n.id === d.source).y)
                     .attr('x2', d => nodes.find(n => n.id === d.target).x)
                     .attr('y2', d => nodes.find(n => n.id === d.target).y);
-
-                    setTimeout(() =>  animatePacket(path), 1000)
             }
         });
     </script>

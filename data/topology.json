@@ -1,0 +1,9 @@
+{
+    "bus": "Bus topology is a simple network structure where all devices are connected to a single central cable, called the bus. Data travels along the bus, and each device listens for its own data. It's cost-effective but prone to failure if the central cable breaks, and performance decreases with more devices due to data collisions.",
+    "star": "In a star topology, all devices are connected to a central hub or switch. Data is transmitted from a device to the hub, which then forwards it to the destination device. This topology is more reliable because if one connection fails, the rest of the network remains operational, but the central hub is a single point of failure.",
+    "ring": "A ring topology connects all devices in a circular fashion, where each device is linked to exactly two others, forming a ring. Data travels in one or both directions around the ring until it reaches its destination. This topology can provide fast data transfer but is vulnerable to failures if any device or connection is disrupted.",
+    "mesh": "Mesh topology features a fully interconnected network where each device is connected to every other device. This provides high redundancy and reliability, as data can travel through multiple paths, but it is costly and complex to implement, particularly in large networks.",
+    "tree": "Tree topology is a hierarchical structure where groups of star-configured networks are connected to a central node. It combines elements of both bus and star topologies, making it scalable and easier to manage large networks. However, if the backbone cable or central nodes fail, sections of the network may become disconnected.",
+    "fully_connected": "In a fully connected topology, each device is directly connected to every other device in the network. This ensures the highest level of redundancy and fault tolerance but is extremely expensive and complex, making it impractical for large-scale networks."
+  }
+  

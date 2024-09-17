@@ -29,7 +29,6 @@ app.get('/generateTopology', (req, res) => {
         }
     
         const outputFile = path.join(__dirname, 'topology', `${topologyType}_topology.json`);
-        console.log(outputFile);
     
         if (fs.existsSync(outputFile)) {
             res.sendFile(outputFile);
@@ -40,7 +39,11 @@ app.get('/generateTopology', (req, res) => {
     
 
 app.get("/simulator",(req,res)=>{
-    res.render("model/simulator");
+    res.render("simulator");
+})
+
+app.get("/pathfinder",(req,res)=>{
+    res.render("pathFinder");
 })
 
 app.get("/icmp",(req,res)=>{
